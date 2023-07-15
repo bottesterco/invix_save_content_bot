@@ -13,6 +13,8 @@ from pyrogram.errors import ChannelBanned, ChannelInvalid, ChannelPrivate, ChatI
 #from ethon.pyfunc import video_metadata
 from main.plugins.helpers import video_metadata
 from telethon import events
+from moviepy.editor import VideoFileClip
+
 
 import logging
 
@@ -28,7 +30,7 @@ def thumbnail(sender):
 def generate_thumbnail(video_file_path, output_thumbnail_path):
     clip = VideoFileClip(video_file_path)
     thumbnail = clip.get_frame(0)  # Get the first frame as the thumbnail
-    thumbnail.save(output_thumbnail_path)
+    thumbnail.save_frame(output_thumbnail_path)
       
 async def check(userbot, client, link):
     logging.info(link)

@@ -24,6 +24,11 @@ logging.getLogger("telethon").setLevel(logging.INFO)
 
 def thumbnail(sender):
     return f'{sender}.jpg' if os.path.exists(f'{sender}.jpg') else None
+
+def generate_thumbnail(video_file_path, output_thumbnail_path):
+    clip = VideoFileClip(video_file_path)
+    thumbnail = clip.get_frame(0)  # Get the first frame as the thumbnail
+    thumbnail.save(output_thumbnail_path)
       
 async def check(userbot, client, link):
     logging.info(link)
@@ -169,7 +174,10 @@ async def get_msg(userbot, client, sender, edit_id, msg_link, i, file_n):
                     os.rename(file, path)
                     file = path
                 try:
-                    thumb_path = await screenshot(file, duration, sender)
+                    thumbnail_file_path = f'{sender}_thumbnail.jpg'
+                    generate_thumbnail(file, thumbnail_file_path)
+                    thumb_path = thumbnail_file_path
+                    #thumb_path = await screenshot(file, duration, sender)
                 except Exception as e:
                     logging.info(e)
                     thumb_path = None
